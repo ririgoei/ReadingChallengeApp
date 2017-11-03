@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ReadingChallengeApp</string>
+    <string name="com.twitter.sdk.android.CONSUMER_KEY">67UWcy5dJJ9pgxtn6zWf0Fksq</string>
+    <string name="com.twitter.sdk.android.CONSUMER_SECRET">bCa2w6UUnghAaZ6lbJyCmUejyZe6zNcaWDeE4XrgvtErlRmiBv</string>
+</resources>
