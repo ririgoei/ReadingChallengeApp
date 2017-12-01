@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1058099705853",
+    "project_id": "readingchallengeapp"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058099705853:android:d1a473990a376b33",
+        "android_client_info": {
+          "package_name": "edu.sjsu.rmarcelita.readingchallengeapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1058099705853-1shb1jeba9g5jkj2hs2710k9ecg8v1t9.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1058099705853-j697un4n50cdicm6unfeetvc9g1mntle.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.sjsu.rmarcelita.readingchallengeapp",
+            "certificate_hash": "dbb02b8c4a79506926ae5728873c09f71d59e1c2"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMVsF3vAX_47ZCv6BCCFGI9t0A2-dvRRI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

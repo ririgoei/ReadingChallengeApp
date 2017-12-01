@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="edu.sjsu.rmarcelita.readingchallengeapp.AccountActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@android:color/white"
+        android:background="?attr/colorPrimary">
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="50dp"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:fitsSystemWindows="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" >
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TableRow
+                android:id="@+id/userInfoTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="10dp"
+                android:weightSum="1" >
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    app:srcCompat="@drawable/account"
+                    android:tint="@color/tw__composer_black"
+                    android:paddingLeft="30dp"/>
+
+                <TextView
+                    android:id="@+id/usernameTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:text="Riri Goei"
+                    android:textAlignment="center"
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/basicInfoTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="20dp"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/border"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/basicInfoTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Basic Information"
+                        android:paddingLeft="10dp"
+                        android:textSize="25dp" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/memberSinceTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_contents"
+                android:minHeight="110px"
+                android:weightSum="1" >
+
+            <TextView
+                android:id="@+id/memberSinceTextView"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="5dp"
+                android:paddingTop="5dp"
+                android:text="Member Since"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/memberSinceValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:paddingRight="5dp"
+                android:paddingTop="5dp"
+                android:text="June 2016"
+                android:textSize="20dp" />
+
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/usernameTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_contents"
+                android:minHeight="110px"
+                android:weightSum="1" >
+
+                <TextView
+                    android:id="@+id/userNameTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Username"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/userNameValTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:text="\@ririgoei"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/emailTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_contents"
+                android:minHeight="110px"
+                android:weightSum="1" >
+
+                <TextView
+                    android:id="@+id/emailTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="E-mail"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/emailValTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:text="riadiani.mg\@gmail.com"
+                    android:textSize="18dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/userStatsTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="20dp"
+                android:weightSum="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/border"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/userStatsTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Your 2017 Statistics"
+                        android:paddingLeft="10dp"
+                        android:textSize="25dp" />
+                </LinearLayout>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/goalTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_contents"
+                android:minHeight="110px"
+                android:weightSum="1" >
+
+                <TextView
+                    android:id="@+id/goalTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Goal"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/goalValTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:text="25 books"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/completedTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_contents"
+                android:minHeight="110px"
+                android:weightSum="1" >
+
+                <TextView
+                    android:id="@+id/completedTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Completed"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/completedValTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:text="20 books"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/progressTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_contents"
+                android:minHeight="110px"
+                android:weightSum="1" >
+
+                <TextView
+                    android:id="@+id/progressTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Progress"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/progressValTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:text="80%"
+                    android:textSize="20dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/pagesReadTableRow"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/border_contents"
+                android:minHeight="110px"
+                android:weightSum="1" >
+
+                <TextView
+                    android:id="@+id/pagesReadTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:paddingLeft="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Pages Read"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:id="@+id/pagesReadValTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:gravity="right"
+                    android:paddingRight="5dp"
+                    android:paddingTop="5dp"
+                    android:text="750 pages"
+                    android:textSize="18dp" />
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/logoutTableRow"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                android:paddingLeft="57dp"
+                android:paddingTop="20dp" >
+
+                <LinearLayout
+                    android:layout_width="10dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/logoutButton"
+                        android:layout_width="10dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:text="Log Out" />
+                </LinearLayout>
+            </TableRow>
+
+        </TableLayout>
+
+    </RelativeLayout>
+
+</android.support.constraint.ConstraintLayout>

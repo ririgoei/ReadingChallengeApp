@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.sjsu.rmarcelita.readingchallengeapp.UpdateChallengeActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nameUpdateChallengeTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="30dp"
+                android:text="Riadiani Marcelita's \n2017 Challenge"
+                android:textAlignment="center"
+                android:textSize="25dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Enter up to 3 amounts of books and their rewards"
+                android:textSize="18dp" />
+
+            <TableLayout
+                android:paddingTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/bookOneChallengeEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:hint="# of Books" />
+
+                    <TextView
+                        android:id="@+id/bookOneChallengeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=" book(s) for $ "
+                        android:textColor="@color/black"
+                        android:textSize="17dp"/>
+
+                    <EditText
+                        android:id="@+id/bookOneMoneyEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:hint="Dollar amount" />
+
+                </TableRow>
+
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/bookTwoChallengeEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:hint="# of Books" />
+
+                    <TextView
+                        android:id="@+id/bookTwoChallengeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=" book(s) for $ "
+                        android:textColor="@color/black"
+                        android:textSize="17dp"/>
+
+                    <EditText
+                        android:id="@+id/bookTwoMoneyEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:hint="Dollar amount" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="1">
+
+                    <EditText
+                        android:id="@+id/bookThreeChallengeEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:hint="# of Books" />
+
+                    <TextView
+                        android:id="@+id/bookThreeChallengeTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=" book(s) for $ "
+                        android:textColor="@color/black"
+                        android:textSize="17dp"/>
+
+                    <EditText
+                        android:id="@+id/bookThreeMoneyEditText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:hint="Dollar amount" />
+
+                </TableRow>
+
+            </TableLayout>
+
+            <Button
+                android:id="@+id/updateChallengeFinalButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="110dp"
+                android:text="Update \nChallenge!" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:titleTextColor="@android:color/white"
+        android:background="?attr/colorPrimary">
+    </android.support.v7.widget.Toolbar>
+</android.support.constraint.ConstraintLayout>

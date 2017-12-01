@@ -6,7 +6,75 @@
     android:layout_height="match_parent"
     tools:context="edu.sjsu.rmarcelita.readingchallengeapp.MainActivity">
 
-<!--    <TextView android:id="@id/android:empty"
+    <RelativeLayout
+        android:background="@drawable/books_wallpaper_2"
+        android:alpha="0.70"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/titleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="40dp"
+                android:textAlignment="center"
+                android:paddingTop="150dp"
+                android:textColor="@color/black"
+                android:text="Read On!" />
+
+            <TextView
+                android:id="@+id/taglineTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="18dp"
+                android:paddingTop="10dp"
+                android:textAlignment="center"
+                android:textColor="@color/black"
+                android:text="Complete reading challenges\n and earn your prizes!" />
+
+            <com.google.android.gms.common.SignInButton
+                android:id="@+id/sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="120dp"
+                android:paddingTop="20dp">
+
+            </com.google.android.gms.common.SignInButton>
+
+            <LinearLayout
+                android:paddingTop="15dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/helpTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"
+                    android:paddingRight="15dp"
+                    android:textColor="@color/black"
+                    android:text="Help" />
+
+                <TextView
+                    android:id="@+id/aboutTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:text="About" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+
+    <!--    <TextView android:id="@id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal|center_vertical"
