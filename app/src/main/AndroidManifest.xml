@@ -35,9 +35,10 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDUzJEMMr8kpWnfQ8Yfj2Y3xVbQ9Es9laA" />
+            android:value="AIzaSyDxEIWIjA8sQZGVqcZY4SJskSXBcxaog5o" />
 
-        <activity android:name=".UpdateCurrentBookActivity"></activity>
+        <activity android:name=".UpdateCurrentBookActivity" />
+        <activity android:name=".DiscoverHorizontalActivity"></activity>
     </application>
 
 </manifest>

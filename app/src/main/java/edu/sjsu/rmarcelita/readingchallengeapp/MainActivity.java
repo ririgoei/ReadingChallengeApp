@@ -18,11 +18,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.Task;
-import com.twitter.sdk.android.core.Twitter;
-import com.twitter.sdk.android.tweetui.SearchTimeline;
-import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
-import com.twitter.sdk.android.tweetui.TweetTimelineRecyclerViewAdapter;
-import com.twitter.sdk.android.tweetui.UserTimeline;
 
 public class MainActivity extends AppCompatActivity {
 
