@@ -56,10 +56,10 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
             }
         });
 
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.contentsFragment);
-//
-//        mapFragment.getMapAsync(this);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.contentFragment);
+
+        mapFragment.getMapAsync(this);
     }
 
     public void onMapReady(GoogleMap googleMap) {
