@@ -18,6 +18,7 @@
             android:orientation="vertical">
 
             <LinearLayout
+                android:id="@+id/fragmentLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
@@ -26,23 +27,40 @@
                 <ListView
                     android:id="@+id/masterListView"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.50"/>
-
-                <ScrollView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.50">
 
-                    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                        xmlns:tools="http://schemas.android.com/tools"
+                </ListView>
+
+                <LinearLayout
+                    android:id="@+id/fragmentContentLinearLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <ViewSwitcher
+                        android:id="@+id/discoverViewSwitcher"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                    <fragment
                         android:id="@+id/contentFragment"
                         android:name="com.google.android.gms.maps.SupportMapFragment"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:visibility="gone"
                         tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
 
-                </ScrollView>
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/twitterRecycleViewDiscover"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="40dp">
+                    </android.support.v7.widget.RecyclerView>
+
+                    </ViewSwitcher>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

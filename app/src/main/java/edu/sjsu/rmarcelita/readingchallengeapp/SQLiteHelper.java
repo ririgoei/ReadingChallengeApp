@@ -100,17 +100,19 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     public void createBooksInfoTable() {
         final String TABLE_NAME = "booksInfo";
         final String TITLE = "title";
+        final String AUTHOR = "author";
+        final String GENRE = "genre";
         final String PAGES = "pages";
         final String COVER = "cover";
-        final String REVIEW = "review";
         final String STARS = "stars";
 
         final String CREATE_BOOKS_INFO_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 TABLE_NAME + "(" +
                 TITLE + " TEXT unique, " +
+                AUTHOR + " TEXT, " +
+                GENRE + " TEXT, " +
                 PAGES + " INTEGER, " +
                 COVER + " TEXT, " +
-                REVIEW + " TEXT, " +
                 STARS + " DOUBLE);";
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -118,14 +120,15 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void insertBooksInfoTable(String title, int pages, String cover, String review,
+    public void insertBooksInfoTable(String title, String author, String genre, int pages, String cover,
                                      double stars) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("title", title);
+        cv.put("author", author);
+        cv.put("genre", genre);
         cv.put("pages", pages);
         cv.put("cover", cover);
-        cv.put("review", review);
         cv.put("stars", stars);
         db.insert("booksInfo", null, cv);
         db.close();
