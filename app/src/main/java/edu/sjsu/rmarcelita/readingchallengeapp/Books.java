@@ -11,7 +11,7 @@ public class Books {
     private String cover;
     private String genre;
     private int pages;
-    private String reviews;
+    private String synopsis;
     private double stars;
 
     public Books() {
@@ -20,15 +20,16 @@ public class Books {
         cover = "";
         genre = "";
         pages = 0;
-        reviews = "";
+        synopsis = "";
         stars = 0.00;
     }
 
-    public Books(String bookTitle, String bookAuthor,
-                 String bookGenre, String bookCover, int bookPages, double bookStars) {
+    public Books(String bookTitle, String bookAuthor, String bookGenre,
+                 String bookSynopsis, String bookCover, int bookPages, double bookStars) {
        title  = bookTitle;
        author = bookAuthor;
        genre = bookGenre;
+       synopsis = bookSynopsis;
        cover = bookCover;
        pages = bookPages;
        stars = bookStars;
@@ -58,11 +59,7 @@ public class Books {
         return stars;
     }
 
-    public void setReviews(String bookReviews) {
-        reviews = bookReviews;
-    }
-
-    public String getReviews() {
-        return reviews;
+    public String getSynopsis() {
+        return synopsis;
     }
 }

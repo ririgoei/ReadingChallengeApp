@@ -33,9 +33,12 @@ import java.util.Random;
 
 public class ReadOnActivity extends AppCompatActivity {
 
+    public static final String BOOK_TITLE_EXTRAMSG = "edu.sjsu.rmarcelita.readingchallengeapp.MESSAGE";
     private SQLiteHelper db;
     private InputStream inputStream;
+    private InputStream inputDetailStream;
     private BufferedReader br;
+    private BufferedReader brDetail;
     private final int MAX_BOOKS = 31;
     private final int MIN_BOOKS = 1;
 
@@ -46,15 +49,28 @@ public class ReadOnActivity extends AppCompatActivity {
         db = new SQLiteHelper(this);
         db.createBooksInfoTable();
         inputStream = getResources().openRawResource(R.raw.books);
+        inputDetailStream = getResources().openRawResource(R.raw.booksynopsis);
+        brDetail = new BufferedReader(new InputStreamReader(inputDetailStream));
         br = new BufferedReader(new InputStreamReader(inputStream));
         try {
-            String csvLine;
+            String csvLine, csvLineDetail;
+            String row[] = new String[6];
+            String rowDetails[] = new String[2];
+            String synopsis = "";
+            int pages = 0;
+            double stars = 0.00;
             while ((csvLine = br.readLine()) != null) {
-                String[] row = csvLine.split(",");
-                int pages = Integer.parseInt(row[3]);
-                double stars = Double.parseDouble(row[5]);
-                db.insertBooksInfoTable(row[0], row[1], row[2], pages, row[4], stars);
+                row = csvLine.split(",");
+                pages = Integer.parseInt(row[3]);
+                stars = Double.parseDouble(row[5]);
+                db.insertBooksInfoTable(row[0], row[1], row[2], "", pages, row[4], stars);
             }
+            while((csvLineDetail = brDetail.readLine()) != null) {
+                rowDetails = csvLineDetail.split("_");
+                synopsis = rowDetails[1];
+                db.updateSynopsis(rowDetails[0], synopsis);
+            }
+
         } catch (IOException ex) {
             throw new RuntimeException("Error in reading CSV file: " + ex);
         } finally {
@@ -73,10 +89,8 @@ public class ReadOnActivity extends AppCompatActivity {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
                 if (sensorEvent.values[2] > 1f) { // anticlockwise
-                    //getWindow().getDecorView().setBackgroundColor(Color.BLUE);
                     getRandomBook();
                 } else if (sensorEvent.values[2] < -1f) { // clockwise
-                    //getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
                     getRandomBook();
                 }
             }
@@ -93,7 +107,9 @@ public class ReadOnActivity extends AppCompatActivity {
         linear.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                Log.v("Test", "Current title: " + title.getText());
+                Intent intent_details = new Intent(getApplicationContext(), BookDetailsActivity.class);
+                intent_details.putExtra(BOOK_TITLE_EXTRAMSG, title.getText());
+                startActivity(intent_details);
                 return true;
             }
         });

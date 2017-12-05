@@ -103,6 +103,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         final String TITLE = "title";
         final String AUTHOR = "author";
         final String GENRE = "genre";
+        final String SYNOPSIS = "synopsis";
         final String PAGES = "pages";
         final String COVER = "cover";
         final String STARS = "stars";
@@ -113,6 +114,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 TITLE + " TEXT unique, " +
                 AUTHOR + " TEXT, " +
                 GENRE + " TEXT, " +
+                SYNOPSIS + " TEXT, " +
                 PAGES + " INTEGER, " +
                 COVER + " TEXT, " +
                 STARS + " DOUBLE);";
@@ -122,17 +124,25 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void insertBooksInfoTable(String title, String author, String genre, int pages, String cover,
-                                     double stars) {
+    public void insertBooksInfoTable(String title, String author, String genre, String synopsis,
+                                     int pages, String cover, double stars) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("title", title);
         cv.put("author", author);
         cv.put("genre", genre);
+        cv.put("synopsis", synopsis);
         cv.put("pages", pages);
         cv.put("cover", cover);
         cv.put("stars", stars);
         db.insert("booksInfo", null, cv);
+        db.close();
+    }
+
+    public void updateSynopsis(String title, String synopsis) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE booksInfo SET synopsis='" + synopsis + "' WHERE title='" + title + "';";
+        db.execSQL(query);
         db.close();
     }
 
@@ -146,18 +156,40 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         String author = res.getString(res.getColumnIndex("author"));
         String bookGenre = res.getString(res.getColumnIndex("genre"));
         String bookCover = res.getString(res.getColumnIndex("cover"));
+        String bookSynopsis = res.getString(res.getColumnIndex("synopsis"));
         int pages = res.getInt(res.getColumnIndex("pages"));
         double stars = res.getDouble(res.getColumnIndex("stars"));
-        book = new Books(title, author, bookGenre, bookCover, pages, stars);
-//        //String bookTitle, String bookGenre, String bookCover, int bookPages, double bookStars
-//        while(res.isAfterLast() == false) {
-//            title = res.getString(res.getColumnIndex("title"));
-//            //Log.v("Test", "Title is: " + title + ", index is: " + id);
-//            //book = new Books();
-//            res.moveToNext();
-//        }
+        book = new Books(title, author, bookGenre, bookSynopsis, bookCover, pages, stars);
         db.close();
         return book;
+    }
+
+    public Books getBookByTitle(String title) {
+        Books book;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM booksInfo" +
+                " WHERE title = '" + title + "';", null);
+        res.moveToFirst();
+        String bookTitle = res.getString(res.getColumnIndex("title"));
+        String author = res.getString(res.getColumnIndex("author"));
+        String bookGenre = res.getString(res.getColumnIndex("genre"));
+        String bookCover = res.getString(res.getColumnIndex("cover"));
+        String bookSynopsis = res.getString(res.getColumnIndex("synopsis"));
+        int pages = res.getInt(res.getColumnIndex("pages"));
+        double stars = res.getDouble(res.getColumnIndex("stars"));
+        book = new Books(bookTitle, author, bookGenre, bookSynopsis, bookCover, pages, stars);
+        db.close();
+        return book;
+    }
+
+    public String getSynopsis(String bookName) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT synopsis FROM booksInfo WHERE title='"
+                + bookName + "';",null);
+        res.moveToFirst();
+        String review = "";
+        String synopsis = res.getString(res.getColumnIndex("synopsis"));
+        return synopsis;
     }
 
     public void deleteUser() {

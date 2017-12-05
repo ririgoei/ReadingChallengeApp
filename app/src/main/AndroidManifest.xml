@@ -38,7 +38,8 @@
             android:value="AIzaSyDxEIWIjA8sQZGVqcZY4SJskSXBcxaog5o" />
 
         <activity android:name=".UpdateCurrentBookActivity" />
-        <activity android:name=".DiscoverHorizontalActivity"></activity>
+        <activity android:name=".DiscoverHorizontalActivity" />
+        <activity android:name=".BookDetailsActivity"></activity>
     </application>
 
 </manifest>
