@@ -1,5 +1,6 @@
 package edu.sjsu.rmarcelita.readingchallengeapp;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
@@ -9,20 +10,34 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Random;
 
 public class ReadOnActivity extends AppCompatActivity {
 
     private SQLiteHelper db;
     private InputStream inputStream;
     private BufferedReader br;
+    private final int MAX_BOOKS = 31;
+    private final int MIN_BOOKS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,32 +55,29 @@ public class ReadOnActivity extends AppCompatActivity {
                 double stars = Double.parseDouble(row[5]);
                 db.insertBooksInfoTable(row[0], row[1], row[2], pages, row[4], stars);
             }
-        }
-        catch (IOException ex) {
-            throw new RuntimeException("Error in reading CSV file: "+ex);
-        }
-        finally {
+        } catch (IOException ex) {
+            throw new RuntimeException("Error in reading CSV file: " + ex);
+        } finally {
             try {
                 inputStream.close();
-            }
-            catch (IOException e) {
-                throw new RuntimeException("Error while closing input stream: "+e);
+            } catch (IOException e) {
+                throw new RuntimeException("Error while closing input stream: " + e);
             }
         }
 
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         Sensor gyroscopeSensor = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
-        final Button testButton = (Button) findViewById(R.id.button2);
         SensorEventListener gyroSensorListener = new SensorEventListener() {
             int count = 0;
+
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
-                if(sensorEvent.values[2] > 0.5f) { // anticlockwise
-                    getWindow().getDecorView().setBackgroundColor(Color.BLUE);
-                    testButton.setText("Button: " + count--);
-                } else if(sensorEvent.values[2] < -0.5f) { // clockwise
-                    getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
-                    testButton.setText("Button: " + count++);
+                if (sensorEvent.values[2] > 1f) { // anticlockwise
+                    //getWindow().getDecorView().setBackgroundColor(Color.BLUE);
+                    getRandomBook();
+                } else if (sensorEvent.values[2] < -1f) { // clockwise
+                    //getWindow().getDecorView().setBackgroundColor(Color.YELLOW);
+                    getRandomBook();
                 }
             }
 
@@ -76,6 +88,15 @@ public class ReadOnActivity extends AppCompatActivity {
         };
 
         sm.registerListener(gyroSensorListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        LinearLayout linear = (LinearLayout) findViewById(R.id.bookLinearLayout);
+        final TextView title = (TextView) findViewById(R.id.readOnTitleTextView);
+        linear.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.v("Test", "Current title: " + title.getText());
+                return true;
+            }
+        });
 
         final Intent intent_home = new Intent(this, HomeActivity.class);
 
@@ -89,6 +110,31 @@ public class ReadOnActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    public void getRandomBook() {
+        Random rand = new Random();
+        int index = rand.nextInt((MAX_BOOKS - MIN_BOOKS) + 1) + MIN_BOOKS;
+
+        Books curBook = db.getRandomBook(index);
+
+        TextView readOnTitle = (TextView) findViewById(R.id.readOnTitleTextView);
+        TextView readOnAuthor = (TextView) findViewById(R.id.readOnAuthorTextView);
+        TextView readOnGenre = (TextView) findViewById(R.id.readOnGenreTextView);
+        TextView readOnPages = (TextView) findViewById(R.id.readOnPagesTextView);
+        TextView readOnDouble = (TextView) findViewById(R.id.readOnStarsTextView);
+
+        ImageView readOnCover = (ImageView) findViewById(R.id.readOnCover);
+
+        readOnTitle.setText(curBook.getTitle());
+        readOnAuthor.setText("by " + curBook.getAuthor());
+        readOnGenre.setText("Genre: " + curBook.getGenre());
+        readOnPages.setText(curBook.getPages() + " pages");
+        readOnDouble.setText("Rating: " + curBook.getStars());
+
+        String cover = curBook.getCover();
+        Picasso.with(getApplicationContext()).load(cover).into(readOnCover);
+
     }
 
     @Override

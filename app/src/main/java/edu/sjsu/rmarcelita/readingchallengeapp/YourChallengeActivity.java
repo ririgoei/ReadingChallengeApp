@@ -1,6 +1,7 @@
 package edu.sjsu.rmarcelita.readingchallengeapp;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.support.v7.widget.Toolbar;
 
+import com.squareup.picasso.MemoryPolicy;
+import com.squareup.picasso.NetworkPolicy;
 import com.squareup.picasso.Picasso;
 
 public class YourChallengeActivity extends AppCompatActivity {
@@ -59,8 +62,16 @@ public class YourChallengeActivity extends AppCompatActivity {
         ImageView bookNine = (ImageView) findViewById(R.id.bookNineImageView);
 
         String existingImage = "https://images-na.ssl-images-amazon.com/images/I/71jn4zl8BUL.jpg";
+        Uri myUri = Uri.parse(existingImage);
 
-        Picasso.with(getApplicationContext()).load(existingImage).resize(150,200).into(currentBook);
+        Picasso.with(getApplicationContext()).setLoggingEnabled(true);
+
+        Picasso.with(this)
+                .load(existingImage)
+                .memoryPolicy(MemoryPolicy.NO_CACHE )
+                .networkPolicy(NetworkPolicy.NO_CACHE)
+                .noFade()
+                .resize(150,200).into(currentBook);
 
         Picasso.with(getApplicationContext()).load(existingImage).resize(150,200).into(bookOne);
         Picasso.with(getApplicationContext()).load(existingImage).resize(150,200).into(bookTwo);

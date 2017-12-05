@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by riri on 11/3/17.
@@ -108,6 +109,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
         final String CREATE_BOOKS_INFO_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 TABLE_NAME + "(" +
+                "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                 TITLE + " TEXT unique, " +
                 AUTHOR + " TEXT, " +
                 GENRE + " TEXT, " +
@@ -132,6 +134,30 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         cv.put("stars", stars);
         db.insert("booksInfo", null, cv);
         db.close();
+    }
+
+    public Books getRandomBook(int id) {
+        Books book;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM booksInfo" +
+                " WHERE ID =" + id + ";", null);
+        res.moveToFirst();
+        String title = res.getString(res.getColumnIndex("title"));
+        String author = res.getString(res.getColumnIndex("author"));
+        String bookGenre = res.getString(res.getColumnIndex("genre"));
+        String bookCover = res.getString(res.getColumnIndex("cover"));
+        int pages = res.getInt(res.getColumnIndex("pages"));
+        double stars = res.getDouble(res.getColumnIndex("stars"));
+        book = new Books(title, author, bookGenre, bookCover, pages, stars);
+//        //String bookTitle, String bookGenre, String bookCover, int bookPages, double bookStars
+//        while(res.isAfterLast() == false) {
+//            title = res.getString(res.getColumnIndex("title"));
+//            //Log.v("Test", "Title is: " + title + ", index is: " + id);
+//            //book = new Books();
+//            res.moveToNext();
+//        }
+        db.close();
+        return book;
     }
 
     public void deleteUser() {
@@ -162,6 +188,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
         final String CREATE_CURRENT_BOOKS_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 TABLE_NAME + "(" +
+                "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                 TITLE + " TEXT unique, " +
                 PAGES + " INTEGER, " +
                 COVER + " TEXT);";

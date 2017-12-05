@@ -165,15 +165,13 @@
 
                     <ImageView
                         android:id="@+id/currentBookImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.5"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/account" />
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="0.5" />
 
                     <Button
                         android:id="@+id/updateCurrentButton"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
                         android:text="Update Current \n Book" />
@@ -210,41 +208,31 @@
                         android:id="@+id/bookOneImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/account" />
+                        android:paddingLeft="10dp" />
 
                     <ImageView
                         android:id="@+id/bookTwoImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/account" />
+                        android:paddingLeft="30dp" />
 
                     <ImageView
                         android:id="@+id/bookThreeImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/book_wallpaper" />
+                        android:paddingLeft="30dp" />
 
                     <ImageView
                         android:id="@+id/bookFourImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/book_wallpaper" />
+                        android:paddingLeft="30dp" />
 
                     <ImageView
                         android:id="@+id/bookFiveImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/book_wallpaper" />
+                        android:paddingLeft="30dp" />
                 </GridLayout>
             </TableRow>
 
@@ -261,33 +249,25 @@
                         android:id="@+id/bookSixImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/account" />
+                        android:paddingLeft="10dp" />
 
                     <ImageView
                         android:id="@+id/bookSevenImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/account" />
+                        android:paddingLeft="30dp" />
 
                     <ImageView
                         android:id="@+id/bookEightImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/book_wallpaper" />
+                        android:paddingLeft="30dp" />
 
                     <ImageView
                         android:id="@+id/bookNineImageView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="30dp"
-                        android:tint="@color/tw__composer_black"
-                        app:srcCompat="@drawable/book_wallpaper" />
+                        android:paddingLeft="30dp" />
                 </GridLayout>
             </TableRow>
 
