@@ -201,38 +201,10 @@
                 android:paddingTop="30dp">
 
                 <GridLayout
+                    android:id="@+id/readBooksFirstGrid"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/bookOneImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp" />
-
-                    <ImageView
-                        android:id="@+id/bookTwoImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp" />
-
-                    <ImageView
-                        android:id="@+id/bookThreeImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp" />
-
-                    <ImageView
-                        android:id="@+id/bookFourImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp" />
-
-                    <ImageView
-                        android:id="@+id/bookFiveImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp" />
                 </GridLayout>
             </TableRow>
 
@@ -242,32 +214,10 @@
                 android:paddingTop="30dp">
 
                 <GridLayout
+                    android:id="@+id/readBooksSecondGrid"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/bookSixImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp" />
-
-                    <ImageView
-                        android:id="@+id/bookSevenImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp" />
-
-                    <ImageView
-                        android:id="@+id/bookEightImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp" />
-
-                    <ImageView
-                        android:id="@+id/bookNineImageView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="30dp" />
                 </GridLayout>
             </TableRow>
 
