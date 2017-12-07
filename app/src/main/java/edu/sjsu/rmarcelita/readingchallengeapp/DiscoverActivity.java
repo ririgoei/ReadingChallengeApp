@@ -69,7 +69,6 @@ public class DiscoverActivity extends AppCompatActivity {
             startActivity(intent_horizontal);
         }
 
-        TextView latLng = (TextView) findViewById(R.id.eventsNearTextView);
         TextView libraries = (TextView) findViewById(R.id.librariesNearTextView);
 
         final Intent intent_home = new Intent(this, HomeActivity.class);
@@ -99,8 +98,6 @@ public class DiscoverActivity extends AppCompatActivity {
             Geocoder geocoder = new Geocoder(this, Locale.getDefault());
             try {
                 List<Address> addresses = geocoder.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
-                latLng.setText("Events Near: " + addresses.get(0).getLocality() + ", " +
-                        addresses.get(0).getPostalCode());
                 libraries.setText("Libraries Near: " + addresses.get(0).getLocality() + ", " +
                         addresses.get(0).getPostalCode());
             } catch (Exception e) {

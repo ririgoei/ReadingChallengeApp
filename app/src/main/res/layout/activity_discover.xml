@@ -17,55 +17,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginTop="100dp"
                 android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/eventsNearTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="100dp"
-                    android:text="Events Near: "
-                    android:textSize="20dp" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/border"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/eventOneTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:paddingRight="5dp"
-                        android:text="* Event One"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/eventTwoTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:paddingRight="5dp"
-                        android:text="* Event Two"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/eventThreeTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:paddingRight="5dp"
-                        android:text="* Event Three"
-                        android:textSize="15dp" />
-                </LinearLayout>
 
                 <TextView
                     android:id="@+id/librariesNearTextView"
@@ -118,13 +71,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="40dp"
                     android:textSize="20dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="50dp"
                     android:text="What's Tweetin'?" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/twitterRecycleView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:layout_marginLeft="40dp">
                 </android.support.v7.widget.RecyclerView>
 

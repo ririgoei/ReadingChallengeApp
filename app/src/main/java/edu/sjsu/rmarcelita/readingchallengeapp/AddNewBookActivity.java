@@ -7,12 +7,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class UpdateCurrentBookActivity extends AppCompatActivity {
+public class AddNewBookActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_current_book);
+        setContentView(R.layout.activity_add_new_book);
         createHomeButton();
     }
 

@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         db = new SQLiteHelper(this);
 
         db.createUsersInfoTable();
-        //db.createBooksInfoTable();
-        //db.createUsersChallengeTable();
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()

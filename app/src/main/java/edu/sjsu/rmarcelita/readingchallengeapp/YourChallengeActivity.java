@@ -1,10 +1,6 @@
 package edu.sjsu.rmarcelita.readingchallengeapp;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +11,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.NetworkPolicy;
@@ -28,14 +25,14 @@ import java.util.ArrayList;
 
 public class YourChallengeActivity extends AppCompatActivity {
 
-    public static final String BOOK_EXTRA_MSG = "edu.sjsu.rmarcelita.readingchallengeapp.MESSAGE";
-    public static final String BOOK_TABLE_MSG = "edu.sjsu.rmarcelita.readingchallengeapp.MESSAGE";
+    public static final String BOOK_EXTRA_MSG = "edu.sjsu.rmarcelita.readingchallengeapp.MESSAGE_READON";
     private SQLiteHelper db;
     private ArrayList<Books> readBooks;
     private InputStream inputStream;
     private InputStream inputDetailStream;
     private BufferedReader br;
     private BufferedReader brDetail;
+    private final int READ_BOOKS = 9;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +45,23 @@ public class YourChallengeActivity extends AppCompatActivity {
         db.createCurrentBooksTable();
         db.createChallengeTable();
         db.createReadBooksTable();
+
+        TextView firstLine = findViewById(R.id.oneDollarDistance);
+        TextView secondLine = findViewById(R.id.threeDollarDistance);
+        TextView thirdLine = findViewById(R.id.fiveDollarDistance);
+        ArrayList<Integer> bookChallenges = new ArrayList<>();
+        ArrayList<Double> moneyChallenges = new ArrayList<>();
+
+        if(!db.checkEmptyDatabase("challenges")) {
+            bookChallenges = db.getChallengesBooksInfo();
+            moneyChallenges = db.getChallengesMoneyInfo();
+            firstLine.setText((bookChallenges.get(0) - READ_BOOKS) + " away from $"
+                    + moneyChallenges.get(0));
+            secondLine.setText((bookChallenges.get(1) - READ_BOOKS) + " away from $"
+                    + moneyChallenges.get(1));
+            thirdLine.setText((bookChallenges.get(2) - READ_BOOKS) + " away from $"
+                    + moneyChallenges.get(2));
+        }
 
         Button updateBtn = (Button) findViewById(R.id.updateChallengeButton);
         Button updateCurBtn = (Button) findViewById(R.id.updateCurrentButton);
@@ -166,7 +180,7 @@ public class YourChallengeActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     detail_intent.putExtra(BOOK_EXTRA_MSG, curTitle);
-                    startActivity(detail_intent);
+                    startActivityForResult(detail_intent, 1);
                 }
             });
         }

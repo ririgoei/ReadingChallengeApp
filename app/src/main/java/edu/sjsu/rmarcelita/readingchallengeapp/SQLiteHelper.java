@@ -184,16 +184,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return book;
     }
 
-    public String getSynopsis(String bookName) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT synopsis FROM booksInfo WHERE title='"
-                + bookName + "';",null);
-        res.moveToFirst();
-        String review = "";
-        String synopsis = res.getString(res.getColumnIndex("synopsis"));
-        return synopsis;
-    }
-
     public void deleteUser() {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM usersInfo";
@@ -280,35 +270,31 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         db.close();
     }
 
-    public int getChallengesBooksInfo(String infoToGet) {
+    public ArrayList<Integer> getChallengesBooksInfo() {
         SQLiteDatabase db = this.getReadableDatabase();
-        int info = 0;
-        Cursor res = db.rawQuery("SELECT " + infoToGet + " FROM challenges" +
-                " WHERE ID = 1;", null);
+        ArrayList<Integer> info = new ArrayList<>();
+        Cursor res = db.rawQuery("SELECT * FROM challenges WHERE ID = 1;", null);
         res.moveToFirst();
-        while(res.isAfterLast() == false) {
-            info = res.getInt(0);
-            res.moveToNext();
-        }
+        info.add(res.getInt(res.getColumnIndex("bookOne")));
+        info.add(res.getInt(res.getColumnIndex("bookTwo")));
+        info.add(res.getInt(res.getColumnIndex("bookThree")));
         db.close();
         return info;
     }
 
-    public double getChallengesMoneyInfo(String infoToGet) {
+    public ArrayList<Double> getChallengesMoneyInfo() {
         SQLiteDatabase db = this.getReadableDatabase();
-        double info = 0;
-        Cursor res = db.rawQuery("SELECT " + infoToGet + " FROM challenges" +
-                " WHERE ID = 1;", null);
+        ArrayList<Double> info = new ArrayList<>();
+        Cursor res = db.rawQuery("SELECT * FROM challenges WHERE ID = 1;", null);
         res.moveToFirst();
-        while(res.isAfterLast() == false) {
-            info = res.getDouble(0);
-            res.moveToNext();
-        }
+        info.add(res.getDouble(res.getColumnIndex("moneyOne")));
+        info.add(res.getDouble(res.getColumnIndex("moneyTwo")));
+        info.add(res.getDouble(res.getColumnIndex("moneyThree")));
         db.close();
         return info;
     }
 
-    public void updateChallengeInfo(String infoToUpdate, int bookOne, int bookTwo, int bookThree,
+    public void updateChallengeInfo(int bookOne, int bookTwo, int bookThree,
                                     double moneyOne, double moneyTwo, double moneyThree) {
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "UPDATE challenges SET bookOne =" + bookOne + ", bookTwo =" + bookTwo +
@@ -386,5 +372,21 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         }
         db.close();
         return readBooksList;
+    }
+
+    public boolean checkEmptyDatabase(String tableName) {
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor mCursor = db.rawQuery("SELECT * FROM " + tableName, null);
+        boolean dbEmpty;
+
+        if (mCursor.moveToFirst())
+        {
+            dbEmpty = false;
+
+        } else
+        {
+            dbEmpty = true;
+        }
+        return dbEmpty;
     }
 }

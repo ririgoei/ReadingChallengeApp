@@ -10,6 +10,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="60dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/currentlyReadingTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="10dp"
+                android:textSize="22dp"
+                android:textAlignment="center"
+                android:text="You Are Currently Reading:" />
+
+            <LinearLayout
+                android:id="@+id/currentBooksImageView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"></LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/addButton"
+                    android:layout_width="150dp"
+                    android:layout_marginLeft="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="Add New Book" />
+
+                <Button
+                    android:id="@+id/deleteButton"
+                    android:layout_width="150dp"
+                    android:layout_marginLeft="110dp"
+                    android:layout_height="wrap_content"
+                    android:text="Delete Book" />
+            </LinearLayout>
+
+        </LinearLayout>
     </RelativeLayout>
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

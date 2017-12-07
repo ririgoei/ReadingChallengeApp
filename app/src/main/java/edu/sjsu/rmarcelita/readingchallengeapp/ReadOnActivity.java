@@ -109,7 +109,7 @@ public class ReadOnActivity extends AppCompatActivity {
             public boolean onLongClick(View view) {
                 Intent intent_details = new Intent(getApplicationContext(), BookDetailsActivity.class);
                 intent_details.putExtra(BOOK_TITLE_EXTRAMSG, title.getText());
-                startActivity(intent_details);
+                startActivityForResult(intent_details, 2);
                 return true;
             }
         });
