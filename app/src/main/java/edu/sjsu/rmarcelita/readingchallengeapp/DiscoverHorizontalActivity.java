@@ -52,7 +52,12 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
     private int MY_PERMISSION_READ_FINE_LOCATION = 1;
     private GoogleMap mMap;
     LocationManager locationManager;
-    public ArrayList<String> libraries = new ArrayList<>();
+    public ArrayList<String> libraries;
+    private SQLiteHelper db = new SQLiteHelper(this);
+
+    public DiscoverHorizontalActivity() {
+        libraries = new ArrayList<>();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,22 +198,8 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    private boolean isGooglePlayServicesAvailable() {
-        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
-        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (apiAvailability.isUserResolvableError(resultCode)) {
-                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                Log.i(TAG, "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
-    }
-
     public ArrayList<String> getLibrariesFound() {
+        Log.v("Test", "Libraries: " + libraries.size());
         return libraries;
     }
 
@@ -222,7 +213,9 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
 
             if (result.getString(STATUS).equalsIgnoreCase(OK)) {
 
-                mMap.clear();
+                if(orientation.equals("horizontal")) {
+                    mMap.clear();
+                }
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject place = jsonArray.getJSONObject(i);
@@ -252,12 +245,13 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
                     }
                     libraries.add(placeName);
                 }
-
-                Toast.makeText(getBaseContext(), jsonArray.length() + " libraries found!",
-                        Toast.LENGTH_SHORT).show();
+//                Log.v("Test", "First one is: " + libraries.get(0));
+//                Log.v("Test", "Libraries shown: " + libraries.size());
+//                Toast.makeText(getBaseContext(), jsonArray.length() + " libraries found!",
+//                        Toast.LENGTH_SHORT).show();
             } else if (result.getString(STATUS).equalsIgnoreCase(ZERO_RESULTS)) {
-                Toast.makeText(getBaseContext(), "No libraries found in 5KM radius!!!",
-                        Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getBaseContext(), "No libraries found in 5KM radius!!!",
+//                        Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
@@ -291,5 +285,20 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
 
     @Override
     public void onProviderDisabled(String s) {
+    }
+
+    private boolean isGooglePlayServicesAvailable() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(this, resultCode, PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }

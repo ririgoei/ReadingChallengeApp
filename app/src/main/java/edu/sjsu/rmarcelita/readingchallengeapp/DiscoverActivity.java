@@ -28,11 +28,42 @@ import android.app.ListActivity;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.mopub.volley.Request;
 import com.twitter.sdk.android.core.Twitter;
 import com.twitter.sdk.android.tweetui.SearchTimeline;
 import com.twitter.sdk.android.tweetui.TweetTimelineListAdapter;
 import com.twitter.sdk.android.tweetui.TweetTimelineRecyclerViewAdapter;
 import com.twitter.sdk.android.tweetui.UserTimeline;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.GEOMETRY;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.GOOGLE_BROWSER_API_KEY;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.ICON;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.LATITUDE;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.LIBRARY_ID;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.LOCATION;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.LONGITUDE;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.NAME;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.OK;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.PLACE_ID;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.PROXIMITY_RADIUS;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.REFERENCE;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.STATUS;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.TAG;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.VICINITY;
+import static edu.sjsu.rmarcelita.readingchallengeapp.AppConfig.ZERO_RESULTS;
 
 
 public class DiscoverActivity extends AppCompatActivity {
@@ -40,11 +71,13 @@ public class DiscoverActivity extends AppCompatActivity {
     private int MY_PERMISSION_READ_FINE_LOCATION = 1;
     private int MY_PERMISSION_READ_COARSE_LOCATION = 1;
     private boolean checked = false;
+    public ArrayList<String> libs = new ArrayList<>();
+    private SQLiteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Twitter.initialize(this);
-
+        db = new SQLiteHelper(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_discover);
 
@@ -102,12 +135,11 @@ public class DiscoverActivity extends AppCompatActivity {
                 List<Address> addresses = geocoder.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
                 libraries.setText("Libraries Near: " + addresses.get(0).getLocality() + ", " +
                         addresses.get(0).getPostalCode());
-//                DiscoverHorizontalActivity db = new DiscoverHorizontalActivity();
-//                db.loadNearByPlaces(l.getLatitude(), l.getLongitude(), "vertical");
-//                ArrayList<String> libs = db.getLibrariesFound();
-//                for(int i = 0; i < libs.size(); i++) {
-//                    Log.v("Libs", "Libs: " + libs.get(i));
-//                }
+                loadNearByPlaces(l.getLatitude(), l.getLongitude());
+                Log.v("Test", "Size is now: " + libs.size());
+                for(int i = 0; i < libs.size(); i++) {
+                    Log.v("Libs", "Libs: " + libs.get(i));
+                }
             } catch (Exception e) {
                 Log.v("Error", "Address not found.");
             }
@@ -129,5 +161,78 @@ public class DiscoverActivity extends AppCompatActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    public void loadNearByPlaces(double latitude, double longitude) {
+        String type = "library";
+        StringBuilder googlePlacesUrl =
+                new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        googlePlacesUrl.append("location=").append(latitude).append(",").append(longitude);
+        googlePlacesUrl.append("&radius=").append(PROXIMITY_RADIUS);
+        googlePlacesUrl.append("&types=").append(type);
+        googlePlacesUrl.append("&sensor=true");
+        googlePlacesUrl.append("&key=" + GOOGLE_BROWSER_API_KEY);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, googlePlacesUrl.toString(), null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject result) {
+                        Log.i(TAG, "onResponse: Result= " + result.toString());
+                        parseLocationResult(result);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e(TAG, "onErrorResponse: Error= " + error);
+                Log.e(TAG, "onErrorResponse: Error= " + error.getMessage());
+            }
+        });
+
+        AppController.getInstance().addToRequestQueue(request);
+    }
+
+    public void parseLocationResult(JSONObject result) {
+
+        String id, place_id, placeName = null, reference, icon, vicinity = null;
+        double latitude, longitude;
+
+        try {
+            JSONArray jsonArray = result.getJSONArray("results");
+
+            if (result.getString(STATUS).equalsIgnoreCase(OK)) {
+
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject place = jsonArray.getJSONObject(i);
+
+                    id = place.getString(LIBRARY_ID);
+                    place_id = place.getString(PLACE_ID);
+                    if (!place.isNull(NAME)) {
+                        placeName = place.getString(NAME);
+                    }
+                    if (!place.isNull(VICINITY)) {
+                        vicinity = place.getString(VICINITY);
+                    }
+                    latitude = place.getJSONObject(GEOMETRY).getJSONObject(LOCATION)
+                            .getDouble(LATITUDE);
+                    longitude = place.getJSONObject(GEOMETRY).getJSONObject(LOCATION)
+                            .getDouble(LONGITUDE);
+                    reference = place.getString(REFERENCE);
+                    icon = place.getString(ICON);
+                    libs.add(placeName);
+                }
+                Log.v("Test", "First one is: " + libs.get(0));
+                Log.v("Test", "Libraries shown: " + libs.size());
+//                Toast.makeText(getBaseContext(), jsonArray.length() + " libraries found!",
+//                        Toast.LENGTH_SHORT).show();
+            } else if (result.getString(STATUS).equalsIgnoreCase(ZERO_RESULTS)) {
+//                Toast.makeText(getBaseContext(), "No libraries found in 5KM radius!!!",
+//                        Toast.LENGTH_SHORT).show();
+            }
+
+        } catch (JSONException e) {
+
+            e.printStackTrace();
+            Log.e(TAG, "parseLocationResult: Error=" + e.getMessage());
+        }
     }
 }

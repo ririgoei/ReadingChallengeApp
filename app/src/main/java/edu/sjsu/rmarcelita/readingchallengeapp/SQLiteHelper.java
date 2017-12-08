@@ -440,4 +440,25 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         }
         return dbEmpty;
     }
+
+    public void createLibsTable() {
+        final String TABLE_NAME = "libraries";
+        final String LIBS = "libraries";
+
+        final String CREATE_LIBS_TABLE = "CREATE TABLE IF NOT EXISTS " +
+                TABLE_NAME + "(" +
+                "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                LIBS + " TEXT unique);";
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(CREATE_LIBS_TABLE);
+        db.close();
+    }
+
+    public void insertLibsTable(String libs) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("libraries", libs);
+        db.insert("libraries", null, cv);
+        db.close();
+    }
 }
