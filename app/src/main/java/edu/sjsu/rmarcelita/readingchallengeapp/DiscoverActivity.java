@@ -24,6 +24,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import android.app.ListActivity;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import com.twitter.sdk.android.core.Twitter;
@@ -100,6 +102,12 @@ public class DiscoverActivity extends AppCompatActivity {
                 List<Address> addresses = geocoder.getFromLocation(l.getLatitude(), l.getLongitude(), 1);
                 libraries.setText("Libraries Near: " + addresses.get(0).getLocality() + ", " +
                         addresses.get(0).getPostalCode());
+//                DiscoverHorizontalActivity db = new DiscoverHorizontalActivity();
+//                db.loadNearByPlaces(l.getLatitude(), l.getLongitude(), "vertical");
+//                ArrayList<String> libs = db.getLibrariesFound();
+//                for(int i = 0; i < libs.size(); i++) {
+//                    Log.v("Libs", "Libs: " + libs.get(i));
+//                }
             } catch (Exception e) {
                 Log.v("Error", "Address not found.");
             }

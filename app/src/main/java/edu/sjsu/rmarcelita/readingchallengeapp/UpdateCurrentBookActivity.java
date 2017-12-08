@@ -28,45 +28,49 @@ public class UpdateCurrentBookActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_current_book);
-        //createHomeButton();
+        createHomeButton();
         db = new SQLiteHelper(this);
         currentUser = db.getUserInfo("username").substring(1);
         loadBooks();
+        Button newBook = findViewById(R.id.newBookButton);
+        final Intent newBookIntent = new Intent(this, AddNewBookActivity.class);
+        newBook.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(newBookIntent);
+            }
+        });
     }
 
     public void loadBooks() {
         ArrayList<Books> allCurrent = db.getAllCurrentBooks(currentUser);
         RecyclerView rv = findViewById(R.id.rv);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
+        LinearLayoutManager llm = new LinearLayoutManager(getApplicationContext());
         rv.setLayoutManager(llm);
-        rv.setHasFixedSize(true);
-        CurrentBooksAdapter adapter = new CurrentBooksAdapter(allCurrent);
+        CurrentBooksAdapter adapter = new CurrentBooksAdapter(allCurrent, getApplicationContext());
         rv.setAdapter(adapter);
-        ArrayList<String> covers = new ArrayList<>();
-        for(int i = 0; i < allCurrent.size(); i++) {
-            covers.add(allCurrent.get(i).getCover());
-        }
+        adapter.notifyDataSetChanged();
     }
 
-//    public void createHomeButton() {
-//        final Intent intent_home = new Intent(this, HomeActivity.class);
-//
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//
-//        setSupportActionBar(toolbar);
-//        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                startActivity(intent_home);
-//                return true;
-//            }
-//        });
-//    }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
+    public void createHomeButton() {
+        final Intent intent_home = new Intent(this, HomeActivity.class);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                startActivity(intent_home);
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 }

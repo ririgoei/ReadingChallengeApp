@@ -52,6 +52,7 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
     private int MY_PERMISSION_READ_FINE_LOCATION = 1;
     private GoogleMap mMap;
     LocationManager locationManager;
+    public ArrayList<String> libraries = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,11 +161,11 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
                 .title("Marker in current location"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(currLocation));
         locManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 3000, 0, this);
+                LocationManager.GPS_PROVIDER, 100000, 0, this);
     }
 
-    private void loadNearByPlaces(double latitude, double longitude) {
-        Log.v("Test", "Gets to loadNearbyPlaces method");
+    public void loadNearByPlaces(double latitude, double longitude, String orientation) {
+        final String confg = orientation;
         String type = "library";
         StringBuilder googlePlacesUrl =
                 new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
@@ -179,7 +180,7 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
                 @Override
                 public void onResponse(JSONObject result) {
                     Log.i(TAG, "onResponse: Result= " + result.toString());
-                    parseLocationResult(result);
+                    parseLocationResult(result, confg);
                 }
             }, new Response.ErrorListener() {
             @Override
@@ -207,7 +208,11 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
         return true;
     }
 
-    public void parseLocationResult(JSONObject result) {
+    public ArrayList<String> getLibrariesFound() {
+        return libraries;
+    }
+
+    public void parseLocationResult(JSONObject result, String orientation) {
 
         String id, place_id, placeName = null, reference, icon, vicinity = null;
         double latitude, longitude;
@@ -237,12 +242,15 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
                     reference = place.getString(REFERENCE);
                     icon = place.getString(ICON);
 
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    LatLng latLng = new LatLng(latitude, longitude);
-                    markerOptions.position(latLng);
-                    markerOptions.title(placeName + " : " + vicinity);
+                    if(orientation.equals("horizontal")) {
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        LatLng latLng = new LatLng(latitude, longitude);
+                        markerOptions.position(latLng);
+                        markerOptions.title(placeName + " : " + vicinity);
 
-                    mMap.addMarker(markerOptions);
+                        mMap.addMarker(markerOptions);
+                    }
+                    libraries.add(placeName);
                 }
 
                 Toast.makeText(getBaseContext(), jsonArray.length() + " libraries found!",
@@ -270,7 +278,7 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         Log.v("Test", "Gets to onLocationChanged method");
 
-        loadNearByPlaces(latitude, longitude);
+        loadNearByPlaces(latitude, longitude, "horizontal");
     }
 
     @Override
