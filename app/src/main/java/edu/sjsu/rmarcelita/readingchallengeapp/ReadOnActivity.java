@@ -7,6 +7,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.Rating;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -81,6 +83,7 @@ public class ReadOnActivity extends AppCompatActivity {
             }
         }
 
+        getRandomBook();
         SensorManager sm = (SensorManager) getSystemService(SENSOR_SERVICE);
         Sensor gyroscopeSensor = sm.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
         SensorEventListener gyroSensorListener = new SensorEventListener() {
@@ -138,7 +141,7 @@ public class ReadOnActivity extends AppCompatActivity {
         TextView readOnAuthor = (TextView) findViewById(R.id.readOnAuthorTextView);
         TextView readOnGenre = (TextView) findViewById(R.id.readOnGenreTextView);
         TextView readOnPages = (TextView) findViewById(R.id.readOnPagesTextView);
-        TextView readOnDouble = (TextView) findViewById(R.id.readOnStarsTextView);
+        RatingBar readOnStars = findViewById(R.id.readOnStarsRatingBar);
 
         ImageView readOnCover = (ImageView) findViewById(R.id.readOnCover);
 
@@ -146,7 +149,7 @@ public class ReadOnActivity extends AppCompatActivity {
         readOnAuthor.setText("by " + curBook.getAuthor());
         readOnGenre.setText("Genre: " + curBook.getGenre());
         readOnPages.setText(curBook.getPages() + " pages");
-        readOnDouble.setText("Rating: " + curBook.getStars());
+        readOnStars.setRating((float) curBook.getStars());
 
         String cover = curBook.getCover();
         Picasso.with(getApplicationContext()).load(cover).into(readOnCover);

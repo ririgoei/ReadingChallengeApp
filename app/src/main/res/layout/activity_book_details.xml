@@ -46,6 +46,12 @@
                 android:textSize="15dp"
                 android:text="Genre, Pages, Stars" />
 
+            <RatingBar
+                android:id="@+id/bookRatingBar"
+                android:layout_marginLeft="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

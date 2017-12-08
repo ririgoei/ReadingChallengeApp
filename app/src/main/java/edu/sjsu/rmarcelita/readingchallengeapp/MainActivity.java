@@ -61,18 +61,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         updateUI(account);
-
-//        if(signedIn) {
-//            startActivity(intent);
-//        }
-
-//        final UserTimeline userTimeline = new UserTimeline.Builder()
-//                .screenName("riri_goei")
-//                .build();
-//        final TweetTimelineListAdapter adapter = new TweetTimelineListAdapter.Builder(this)
-//                .setTimeline(userTimeline)
-//                .build();
-//        setListAdapter(adapter);
     }
 
     @Override

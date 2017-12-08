@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.support.v7.widget.Toolbar;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.MemoryPolicy;
@@ -32,36 +33,21 @@ public class YourChallengeActivity extends AppCompatActivity {
     private InputStream inputDetailStream;
     private BufferedReader br;
     private BufferedReader brDetail;
-    private final int READ_BOOKS = 9;
+    private int readBooksNum;
+    private String curUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_challenge);
+        readBooksNum = 0;
 
         db = new SQLiteHelper(this);
-
         db.createUsersChallengeTable();
         db.createCurrentBooksTable();
         db.createChallengeTable();
         db.createReadBooksTable();
-
-        TextView firstLine = findViewById(R.id.oneDollarDistance);
-        TextView secondLine = findViewById(R.id.threeDollarDistance);
-        TextView thirdLine = findViewById(R.id.fiveDollarDistance);
-        ArrayList<Integer> bookChallenges = new ArrayList<>();
-        ArrayList<Double> moneyChallenges = new ArrayList<>();
-
-        if(!db.checkEmptyDatabase("challenges")) {
-            bookChallenges = db.getChallengesBooksInfo();
-            moneyChallenges = db.getChallengesMoneyInfo();
-            firstLine.setText((bookChallenges.get(0) - READ_BOOKS) + " away from $"
-                    + moneyChallenges.get(0));
-            secondLine.setText((bookChallenges.get(1) - READ_BOOKS) + " away from $"
-                    + moneyChallenges.get(1));
-            thirdLine.setText((bookChallenges.get(2) - READ_BOOKS) + " away from $"
-                    + moneyChallenges.get(2));
-        }
+        curUser = db.getUserInfo("username").substring(1);
 
         Button updateBtn = (Button) findViewById(R.id.updateChallengeButton);
         Button updateCurBtn = (Button) findViewById(R.id.updateCurrentButton);
@@ -82,20 +68,54 @@ public class YourChallengeActivity extends AppCompatActivity {
             }
         });
 
-        ImageView currentBook = (ImageView) findViewById(R.id.currentBookImageView);
-
-        String existingImage = "https://images-na.ssl-images-amazon.com/images/I/71jn4zl8BUL.jpg";
-
-        Picasso.with(this)
-                .load(existingImage)
-                .memoryPolicy(MemoryPolicy.NO_CACHE )
-                .networkPolicy(NetworkPolicy.NO_CACHE)
-                .noFade()
-                .resize(150,200).into(currentBook);
-
+        loadCurrentsFromCSV();
         loadFromCSV();
         loadCurrentBooks();
+        loadReadBooks();
+        setChallengesTextView();
+        createHomeButton();
+    }
 
+    public void setChallengesTextView() {
+
+        TextView firstLine = findViewById(R.id.oneDollarDistance);
+        TextView secondLine = findViewById(R.id.threeDollarDistance);
+        TextView thirdLine = findViewById(R.id.fiveDollarDistance);
+        ArrayList<Integer> bookChallenges = new ArrayList<>();
+        ArrayList<Double> moneyChallenges = new ArrayList<>();
+
+        if(!db.checkEmptyDatabase("challenges")) {
+            bookChallenges = db.getChallengesBooksInfo();
+            moneyChallenges = db.getChallengesMoneyInfo();
+            firstLine.setText((bookChallenges.get(0) - readBooksNum) + " away from $"
+                    + moneyChallenges.get(0));
+            secondLine.setText((bookChallenges.get(1) - readBooksNum) + " away from $"
+                    + moneyChallenges.get(1));
+            thirdLine.setText((bookChallenges.get(2) - readBooksNum) + " away from $"
+                    + moneyChallenges.get(2));
+        }
+    }
+
+    public void loadCurrentBooks() {
+        LinearLayout curBooks = findViewById(R.id.curImageViewsLinearLayout);
+        ArrayList<Books> currents = db.getAllCurrentBooks(curUser);
+        ImageView curBook;
+        String curCover = "";
+        int sizeInDp = 10;
+        float scale = getResources().getDisplayMetrics().density;
+        int dpAsPixels = (int) (sizeInDp*scale + 0.5f);
+        for(int i = 0; i < currents.size(); i++) {
+            curCover = currents.get(i).getCover();
+            curBook = new ImageView(this);
+            curBook.setPadding(dpAsPixels,0,0,0);
+            curBooks.addView(curBook);
+            Picasso.with(this)
+                    .load(curCover)
+                    .resize(150,200).into(curBook);
+        }
+    }
+
+    public void createHomeButton() {
         final Intent intent_home = new Intent(this, HomeActivity.class);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -110,14 +130,14 @@ public class YourChallengeActivity extends AppCompatActivity {
         });
     }
 
-    public void loadFromCSV() {
-        inputStream = getResources().openRawResource(R.raw.readbooks);
-        inputDetailStream = getResources().openRawResource(R.raw.readbooksynopsis);
+    public void loadCurrentsFromCSV() {
+        inputStream = getResources().openRawResource(R.raw.currentlyreading);
+        inputDetailStream = getResources().openRawResource(R.raw.currentsynopsis);
         brDetail = new BufferedReader(new InputStreamReader(inputDetailStream));
         br = new BufferedReader(new InputStreamReader(inputStream));
         try {
             String csvLine, csvLineDetail;
-            String row[] = new String[6];
+            String row[] = new String[7];
             String rowDetails[] = new String[2];
             String synopsis = "";
             int pages = 0;
@@ -126,30 +146,74 @@ public class YourChallengeActivity extends AppCompatActivity {
                 row = csvLine.split(",");
                 pages = Integer.parseInt(row[3]);
                 stars = Double.parseDouble(row[5]);
-                db.insertReadBooksTable(row[0], row[1], row[2], "", pages, row[4], stars);
+                db.insertCurrentBooksTable(row[0], row[1], row[2], "", pages, row[4], stars,
+                        row[6]);
             }
             while ((csvLineDetail = brDetail.readLine()) != null) {
                 rowDetails = csvLineDetail.split("_");
                 synopsis = rowDetails[1];
-                db.updateReadBooksSynopsis(rowDetails[0], synopsis);
+                db.updateReadBooksSynopsis(rowDetails[0], synopsis, "currentBooks");
             }
         } catch (IOException ex) {
             throw new RuntimeException("Error in reading CSV file: " + ex);
         } finally {
             try {
                 inputStream.close();
+                inputDetailStream.close();
             } catch (IOException e) {
                 throw new RuntimeException("Error while closing input stream: " + e);
             }
         }
     }
 
-    public void loadCurrentBooks() {
+    public void loadFromCSV() {
+        inputStream = getResources().openRawResource(R.raw.readbooks);
+        inputDetailStream = getResources().openRawResource(R.raw.readbooksynopsis);
+        brDetail = new BufferedReader(new InputStreamReader(inputDetailStream));
+        br = new BufferedReader(new InputStreamReader(inputStream));
+        try {
+            String csvLine, csvLineDetail;
+            String row[] = new String[7];
+            String rowDetails[] = new String[2];
+            String synopsis = "";
+            int pages = 0;
+            double stars = 0.00;
+            while ((csvLine = br.readLine()) != null) {
+                row = csvLine.split(",");
+                pages = Integer.parseInt(row[3]);
+                stars = Double.parseDouble(row[5]);
+                db.insertReadBooksTable(row[0], row[1], row[2], "", pages, row[4], stars,
+                        row[6]);
+            }
+            while ((csvLineDetail = brDetail.readLine()) != null) {
+                rowDetails = csvLineDetail.split("_");
+                synopsis = rowDetails[1];
+                db.updateReadBooksSynopsis(rowDetails[0], synopsis, "readBooks");
+            }
+        } catch (IOException ex) {
+            throw new RuntimeException("Error in reading CSV file: " + ex);
+        } finally {
+            try {
+                inputStream.close();
+                inputDetailStream.close();
+            } catch (IOException e) {
+                throw new RuntimeException("Error while closing input stream: " + e);
+            }
+        }
+    }
+
+    public void loadReadBooks() {
         GridLayout firstGrid = (GridLayout) findViewById(R.id.readBooksFirstGrid);
         GridLayout secondGrid = (GridLayout) findViewById(R.id.readBooksSecondGrid);
         ImageView readBook;
         String currentCover;
-        readBooks = db.getAllReadBooks();
+        readBooks = db.getAllReadBooks(curUser);
+
+        TextView numRead = findViewById(R.id.booksReadTextView);
+        String size = readBooks.size() + "";
+        numRead.setText(size);
+        readBooksNum = readBooks.size();
+
         int sizeInDp = 10;
         int sizeInDpLeft = 30;
         float scale = getResources().getDisplayMetrics().density;
@@ -164,7 +228,6 @@ public class YourChallengeActivity extends AppCompatActivity {
                 readBook.setPadding(dpAsPixels, 0, 0, 0);
             }
             currentCover = readBooks.get(i).getCover();
-            Log.v("Cover", "Cover: " + currentCover);
             if(i < 5) {
                 firstGrid.addView(readBook);
             } else {

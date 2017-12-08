@@ -38,10 +38,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <EditText
-                android:id="@+id/newBookGenreEditText"
-                android:hint="Genre"
+            <com.reginald.editspinner.EditSpinner
+                android:id="@+id/genreEditSpinner"
                 android:layout_marginLeft="20dp"
+                android:hint="Genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            <EditText
+                android:id="@+id/newBookSynopsisEditText"
+                android:hint="250 word synopsis (optional)"
+                android:layout_marginLeft="20dp"
+                android:maxLength="250"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -65,6 +74,14 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/addNewBookButton"
+                android:layout_width="150dp"
+                android:layout_marginLeft="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Add Your \nNew Book!" />
         </LinearLayout>
     </RelativeLayout>
     <android.support.v7.widget.Toolbar

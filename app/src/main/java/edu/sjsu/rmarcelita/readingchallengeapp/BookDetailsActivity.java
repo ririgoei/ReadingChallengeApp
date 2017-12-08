@@ -8,8 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.nearby.messages.internal.Update;
 import com.squareup.picasso.Picasso;
 
 public class BookDetailsActivity extends AppCompatActivity {
@@ -26,12 +28,15 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         String intent1 = intent.getStringExtra(ReadOnActivity.BOOK_TITLE_EXTRAMSG);
         String intent2 = intent.getStringExtra(YourChallengeActivity.BOOK_EXTRA_MSG);
+        String intent3 = intent.getStringExtra(UpdateCurrentBookActivity.CURBOOK_EXTRA_MSG);
 
-        if(intent1 != null || intent2 != null) {
+        if(intent1 != null || intent2 != null || intent3 != null) {
             if(intent1 != null) {
                 readBookDetails(intent1, "booksInfo");
-            } else {
+            } else if(intent2 != null){
                 readBookDetails(intent2, "readBooks");
+            } else {
+                readBookDetails(intent3, "currentBooks");
             }
         }
 
@@ -63,8 +68,6 @@ public class BookDetailsActivity extends AppCompatActivity {
             currentBook = db.getBookByTitle(tableName, bookTitle);
         }
 
-        Log.v("Test", "table name: " + tableName + " and booktitle = " + bookTitle);
-
         ImageView cover = (ImageView) findViewById(R.id.detailsCoverImageView);
         TextView title = (TextView) findViewById(R.id.detailsTitleTextView);
         TextView author = (TextView) findViewById(R.id.detailsAuthorTextView);
@@ -76,25 +79,12 @@ public class BookDetailsActivity extends AppCompatActivity {
 
         title.setText(bookTitle);
         author.setText("by " + currentBook.getAuthor());
-        bookDetails.setText("Genre: " + currentBook.getGenre() + " \n" + currentBook.getPages()
-                + " pages, " + currentBook.getStars() + " stars");
+        bookDetails.setText("Genre: " + currentBook.getGenre() + ", " + currentBook.getPages()
+                + " pages");
+        RatingBar stars = findViewById(R.id.bookRatingBar);
+        stars.setRating((float) currentBook.getStars());
         synopsis.setText(currentSynopsis);
         Picasso.with(getApplicationContext()).load(currentBook.getCover()).into(cover);
-    }
-
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Log.v("Test", "This gets called");
-        switch (requestCode) {
-            case 1:
-                String table = "readBooks";
-                readBookDetails(data.toString(), table);
-                break;
-            case 2:
-                String tableName = "booksInfo";
-                readBookDetails(data.toString(), tableName);
-                break;
-        }
     }
 
     @Override

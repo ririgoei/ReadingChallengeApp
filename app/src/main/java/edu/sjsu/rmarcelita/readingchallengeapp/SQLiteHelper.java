@@ -207,29 +207,75 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     public void createCurrentBooksTable() {
         final String TABLE_NAME = "currentBooks";
         final String TITLE = "title";
+        final String AUTHOR = "author";
+        final String GENRE = "genre";
+        final String SYNOPSIS = "synopsis";
         final String PAGES = "pages";
         final String COVER = "cover";
+        final String STARS = "stars";
+        final String USER = "user";
 
-        final String CREATE_CURRENT_BOOKS_TABLE = "CREATE TABLE IF NOT EXISTS " +
+        final String CREATE_BOOKS_INFO_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 TABLE_NAME + "(" +
                 "ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
                 TITLE + " TEXT unique, " +
+                AUTHOR + " TEXT, " +
+                GENRE + " TEXT, " +
+                SYNOPSIS + " TEXT, " +
                 PAGES + " INTEGER, " +
-                COVER + " TEXT);";
+                COVER + " TEXT, " +
+                STARS + " DOUBLE, " +
+                USER + " TEXT);";
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(CREATE_CURRENT_BOOKS_TABLE);
+        db.execSQL(CREATE_BOOKS_INFO_TABLE);
         db.close();
     }
 
-    public void insertCurrentBooksTable(String title, String pages, String cover) {
+    public void insertCurrentBooksTable(String title, String author, String genre, String synopsis,
+                                     int pages, String cover, double stars, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("title", title);
+        cv.put("author", author);
+        cv.put("genre", genre);
+        cv.put("synopsis", synopsis);
         cv.put("pages", pages);
         cv.put("cover", cover);
+        cv.put("stars", stars);
+        cv.put("user", user);
         db.insert("currentBooks", null, cv);
         db.close();
+    }
+
+    public void deleteFromCurrentBookTable(String title) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM currentBooks WHERE title='" + title + "';";
+        db.execSQL(query);
+        db.close();
+    }
+
+    public ArrayList<Books> getAllCurrentBooks(String userName) {
+        ArrayList<Books> readBooksList = new ArrayList<>();
+        Books book;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.rawQuery("SELECT * FROM currentBooks WHERE user='" + userName
+                + "';", null);
+        res.moveToFirst();
+        while(res.isAfterLast() == false) {
+            String title = res.getString(res.getColumnIndex("title"));
+            String author = res.getString(res.getColumnIndex("author"));
+            String bookGenre = res.getString(res.getColumnIndex("genre"));
+            String bookCover = res.getString(res.getColumnIndex("cover"));
+            String bookSynopsis = res.getString(res.getColumnIndex("synopsis"));
+            int pages = res.getInt(res.getColumnIndex("pages"));
+            double stars = res.getDouble(res.getColumnIndex("stars"));
+            book = new Books(title, author, bookGenre, bookSynopsis, bookCover, pages, stars);
+            readBooksList.add(book);
+            res.moveToNext();
+        }
+        db.close();
+        return readBooksList;
     }
 
     public void createChallengeTable() {
@@ -313,6 +359,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         final String PAGES = "pages";
         final String COVER = "cover";
         final String STARS = "stars";
+        final String USER = "user";
 
         final String CREATE_BOOKS_INFO_TABLE = "CREATE TABLE IF NOT EXISTS " +
                 TABLE_NAME + "(" +
@@ -323,7 +370,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 SYNOPSIS + " TEXT, " +
                 PAGES + " INTEGER, " +
                 COVER + " TEXT, " +
-                STARS + " DOUBLE);";
+                STARS + " DOUBLE, " +
+                USER + " TEXT);";
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(CREATE_BOOKS_INFO_TABLE);
@@ -331,7 +379,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     }
 
     public void insertReadBooksTable(String title, String author, String genre, String synopsis,
-                                     int pages, String cover, double stars) {
+                                     int pages, String cover, double stars, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put("title", title);
@@ -341,22 +389,25 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         cv.put("pages", pages);
         cv.put("cover", cover);
         cv.put("stars", stars);
+        cv.put("user", user);
         db.insert("readBooks", null, cv);
         db.close();
     }
 
-    public void updateReadBooksSynopsis(String title, String synopsis) {
+    public void updateReadBooksSynopsis(String title, String synopsis, String tableName) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String query = "UPDATE readBooks SET synopsis='" + synopsis + "' WHERE title='" + title + "';";
+        String query = "UPDATE " + tableName + " SET synopsis='" + synopsis
+                + "' WHERE title='" + title + "';";
         db.execSQL(query);
         db.close();
     }
 
-    public ArrayList<Books> getAllReadBooks() {
+    public ArrayList<Books> getAllReadBooks(String userName) {
         ArrayList<Books> readBooksList = new ArrayList<>();
         Books book;
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res = db.rawQuery("SELECT * FROM readBooks;", null);
+        Cursor res = db.rawQuery("SELECT * FROM readBooks WHERE user='" + userName
+                + "';", null);
         res.moveToFirst();
         while(res.isAfterLast() == false) {
             String title = res.getString(res.getColumnIndex("title"));

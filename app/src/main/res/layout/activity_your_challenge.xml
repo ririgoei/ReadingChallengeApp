@@ -163,11 +163,14 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/currentBookImageView"
+                    <LinearLayout
+                        android:id="@+id/curImageViewsLinearLayout"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.5" />
+                        android:layout_weight="0.5"
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
 
                     <Button
                         android:id="@+id/updateCurrentButton"
