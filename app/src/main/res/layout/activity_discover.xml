@@ -17,61 +17,41 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="100dp"
+                android:layout_marginTop="70dp"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/librariesNearTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="30dp"
                     android:textSize="20dp"
                     android:layout_marginTop="15dp"
                     android:text="Locate Libraries Near: " />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="40dp"
+                <ScrollView
+                    android:layout_marginLeft="30dp"
                     android:layout_marginTop="5dp"
-                    android:background="@drawable/border"
-                    android:orientation="vertical">
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
 
-                    <TextView
-                        android:id="@+id/libraryOneTextView"
+                    <LinearLayout
+                        android:id="@+id/librariesLinearLayout"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="* Library One"
-                        android:textSize="15dp" />
+                        android:layout_height="match_parent"
+                        android:background="@drawable/border"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/libraryTwoTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="* Library Two"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/libraryThreeTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="5dp"
-                        android:text="* Library Three"
-                        android:textSize="15dp" />
-                </LinearLayout>
+                    </LinearLayout>
+                </ScrollView>
 
                 <TextView
                     android:id="@+id/whatsTweetinTextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="30dp"
                     android:textSize="20dp"
-                    android:layout_marginTop="50dp"
+                    android:layout_marginTop="20dp"
                     android:text="What's Tweetin'?" />
 
                 <android.support.v7.widget.RecyclerView
@@ -79,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:layout_marginLeft="40dp">
+                    android:layout_marginLeft="30dp">
                 </android.support.v7.widget.RecyclerView>
 
             </LinearLayout>

@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import android.app.ListActivity;
@@ -82,7 +83,7 @@ public class DiscoverActivity extends AppCompatActivity {
         setContentView(R.layout.activity_discover);
 
         final UserTimeline userTimeline = new UserTimeline.Builder()
-                .screenName("riri_goei")
+                .screenName("BookRiot")
                 .build();
         final TweetTimelineRecyclerViewAdapter adapter =
                 new TweetTimelineRecyclerViewAdapter.Builder(this)
@@ -94,19 +95,22 @@ public class DiscoverActivity extends AppCompatActivity {
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         tweetRecycle.setLayoutManager(mLayoutManager);
         tweetRecycle.getLayoutParams().height = 1000;
-        tweetRecycle.getLayoutParams().width = 1100;
+        tweetRecycle.getLayoutParams().width = 1200;
         tweetRecycle.setAdapter(adapter);
 
         Configuration config = getResources().getConfiguration();
         final Intent intent_horizontal = new Intent(this, DiscoverHorizontalActivity.class);
 
+        getCurLocAndLibraries();
+        createHomeButton();
+
         if(config.orientation == Configuration.ORIENTATION_LANDSCAPE) {
             startActivity(intent_horizontal);
         }
+    }
 
+    public void getCurLocAndLibraries() {
         TextView libraries = (TextView) findViewById(R.id.librariesNearTextView);
-
-        final Intent intent_home = new Intent(this, HomeActivity.class);
 
         ActivityCompat.requestPermissions(this,
                 new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, MY_PERMISSION_READ_COARSE_LOCATION);
@@ -136,14 +140,15 @@ public class DiscoverActivity extends AppCompatActivity {
                 libraries.setText("Libraries Near: " + addresses.get(0).getLocality() + ", " +
                         addresses.get(0).getPostalCode());
                 loadNearByPlaces(l.getLatitude(), l.getLongitude());
-                Log.v("Test", "Size is now: " + libs.size());
-                for(int i = 0; i < libs.size(); i++) {
-                    Log.v("Libs", "Libs: " + libs.get(i));
-                }
+                Log.v("Test", "Libs: " + libs.get(0));
             } catch (Exception e) {
                 Log.v("Error", "Address not found.");
             }
         }
+    }
+
+    public void createHomeButton() {
+        final Intent intent_home = new Intent(this, HomeActivity.class);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -220,13 +225,19 @@ public class DiscoverActivity extends AppCompatActivity {
                     icon = place.getString(ICON);
                     libs.add(placeName);
                 }
-                Log.v("Test", "First one is: " + libs.get(0));
-                Log.v("Test", "Libraries shown: " + libs.size());
-//                Toast.makeText(getBaseContext(), jsonArray.length() + " libraries found!",
-//                        Toast.LENGTH_SHORT).show();
+
+                LinearLayout libLinear = findViewById(R.id.librariesLinearLayout);
+                TextView librariesText;
+                int sizeInDp = 2;
+                float scale = getResources().getDisplayMetrics().density;
+                int dpAsPixels = (int) (sizeInDp*scale + 0.5f);
+                for(int i = 0; i < libs.size(); i++) {
+                    librariesText = new TextView(this);
+                    librariesText.setText("\u2022 " + libs.get(i));
+                    librariesText.setPadding(dpAsPixels, 0,  dpAsPixels, 0);
+                    libLinear.addView(librariesText);
+                }
             } else if (result.getString(STATUS).equalsIgnoreCase(ZERO_RESULTS)) {
-//                Toast.makeText(getBaseContext(), "No libraries found in 5KM radius!!!",
-//                        Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {

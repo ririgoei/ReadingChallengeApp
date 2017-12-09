@@ -26,6 +26,7 @@ import android.widget.ViewSwitcher;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -109,7 +110,7 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
 
     public void displayTwitter(ViewSwitcher switcher) {
         final UserTimeline userTimeline = new UserTimeline.Builder()
-                .screenName("riri_goei")
+                .screenName("BookRiot")
                 .build();
 
         final TweetTimelineRecyclerViewAdapter adapter =
@@ -117,11 +118,12 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
                         .setTimeline(userTimeline)
                         .setViewStyle(R.style.tw__TweetLightWithActionsStyle)
                         .build();
-
         final LinearLayout fragmentLinear = (LinearLayout) findViewById(R.id.fragmentContentLinearLayout);
         final RecyclerView tweetRecycle = (RecyclerView) findViewById(R.id.twitterRecycleViewDiscover);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         tweetRecycle.setLayoutManager(mLayoutManager);
+        tweetRecycle.getLayoutParams().height = 1200;
+        tweetRecycle.getLayoutParams().width = 2000;
         tweetRecycle.setAdapter(adapter);
         switcher.showNext();
     }
@@ -169,8 +171,7 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
                 LocationManager.GPS_PROVIDER, 100000, 0, this);
     }
 
-    public void loadNearByPlaces(double latitude, double longitude, String orientation) {
-        final String confg = orientation;
+    public void loadNearByPlaces(double latitude, double longitude) {
         String type = "library";
         StringBuilder googlePlacesUrl =
                 new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
@@ -185,7 +186,7 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
                 @Override
                 public void onResponse(JSONObject result) {
                     Log.i(TAG, "onResponse: Result= " + result.toString());
-                    parseLocationResult(result, confg);
+                    parseLocationResult(result);
                 }
             }, new Response.ErrorListener() {
             @Override
@@ -198,12 +199,8 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
         AppController.getInstance().addToRequestQueue(request);
     }
 
-    public ArrayList<String> getLibrariesFound() {
-        Log.v("Test", "Libraries: " + libraries.size());
-        return libraries;
-    }
 
-    public void parseLocationResult(JSONObject result, String orientation) {
+    public void parseLocationResult(JSONObject result) {
 
         String id, place_id, placeName = null, reference, icon, vicinity = null;
         double latitude, longitude;
@@ -213,9 +210,9 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
 
             if (result.getString(STATUS).equalsIgnoreCase(OK)) {
 
-                if(orientation.equals("horizontal")) {
-                    mMap.clear();
-                }
+
+                mMap.clear();
+
 
                 for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject place = jsonArray.getJSONObject(i);
@@ -235,25 +232,20 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
                     reference = place.getString(REFERENCE);
                     icon = place.getString(ICON);
 
-                    if(orientation.equals("horizontal")) {
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        LatLng latLng = new LatLng(latitude, longitude);
-                        markerOptions.position(latLng);
-                        markerOptions.title(placeName + " : " + vicinity);
 
-                        mMap.addMarker(markerOptions);
-                    }
-                    libraries.add(placeName);
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    LatLng latLng = new LatLng(latitude, longitude);
+                    markerOptions.position(latLng);
+                    markerOptions.title(placeName + " : " + vicinity);
+
+                    mMap.addMarker(markerOptions);
                 }
-//                Log.v("Test", "First one is: " + libraries.get(0));
-//                Log.v("Test", "Libraries shown: " + libraries.size());
-//                Toast.makeText(getBaseContext(), jsonArray.length() + " libraries found!",
-//                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), jsonArray.length() + " libraries found!",
+                        Toast.LENGTH_SHORT).show();
             } else if (result.getString(STATUS).equalsIgnoreCase(ZERO_RESULTS)) {
-//                Toast.makeText(getBaseContext(), "No libraries found in 5KM radius!!!",
-//                        Toast.LENGTH_SHORT).show();
+                Toast.makeText(getBaseContext(), "No libraries found in 5KM radius!!!",
+                        Toast.LENGTH_SHORT).show();
             }
-
         } catch (JSONException e) {
 
             e.printStackTrace();
@@ -268,11 +260,12 @@ public class DiscoverHorizontalActivity extends AppCompatActivity implements OnM
 
         LatLng latLng = new LatLng(latitude, longitude);
         mMap.addMarker(new MarkerOptions().position(latLng).title("My Location"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-        Log.v("Test", "Gets to onLocationChanged method");
+        CameraUpdate center = CameraUpdateFactory.newLatLng(latLng);
+        CameraUpdate zoom = CameraUpdateFactory.zoomTo(16.0f);
+        mMap.moveCamera(center);
+        mMap.animateCamera(zoom);
 
-        loadNearByPlaces(latitude, longitude, "horizontal");
+        loadNearByPlaces(latitude, longitude);
     }
 
     @Override

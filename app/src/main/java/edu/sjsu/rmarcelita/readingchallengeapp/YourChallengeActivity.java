@@ -35,6 +35,7 @@ public class YourChallengeActivity extends AppCompatActivity {
     private BufferedReader brDetail;
     private int readBooksNum;
     private String curUser;
+    private boolean firstTime = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,9 @@ public class YourChallengeActivity extends AppCompatActivity {
             }
         });
 
-        loadCurrentsFromCSV();
+        if(db.checkEmptyDatabase("currentBooks")) {
+            loadCurrentsFromCSV();
+        }
         loadFromCSV();
         loadCurrentBooks();
         loadReadBooks();

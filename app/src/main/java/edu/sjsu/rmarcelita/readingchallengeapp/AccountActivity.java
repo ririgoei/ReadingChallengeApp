@@ -21,9 +21,12 @@ import com.google.android.gms.tasks.Task;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 public class AccountActivity extends AppCompatActivity {
 
     private SQLiteHelper db;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +35,10 @@ public class AccountActivity extends AppCompatActivity {
         db = new SQLiteHelper(this);
 
         String name = db.getUserInfo("name");
-        String username = db.getUserInfo("username");
+        username = db.getUserInfo("username");
         String email = db.getUserInfo("email");
 
-        TextView nameText = (TextView) findViewById(R.id.userNameTextView);
+        TextView nameText = (TextView) findViewById(R.id.usernameTextView);
         nameText.setText(name);
 
         TextView usernameText = (TextView) findViewById(R.id.userNameValTextView);
@@ -51,7 +54,21 @@ public class AccountActivity extends AppCompatActivity {
                 signOut();
             }
         });
+        getPages();
+        createHomeButton();
+    }
 
+    public void getPages() {
+        ArrayList<Books> books = db.getAllReadBooks(username.substring(1));
+        int totalPages = 0;
+        for(int i = 0; i < books.size(); i++) {
+            totalPages += books.get(i).getPages();
+        }
+        TextView totalPagesText = findViewById(R.id.pagesReadValTextView);
+        totalPagesText.setText(totalPages + " pages");
+    }
+
+    public void createHomeButton() {
         final Intent intent_home = new Intent(this, HomeActivity.class);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
